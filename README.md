@@ -5,9 +5,18 @@
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+## Setting Host
+
 ```
-yarn serve
+127.0.0.1 aitschool.com
+```
+
+> 测试微信登录需要开 80 端口和配置 host
+
+### Compiles and hot-reloads for development
+
+```
+sudo yarn serve
 ```
 
 ### Compiles and minifies for production
