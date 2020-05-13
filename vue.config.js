@@ -1,7 +1,7 @@
 module.exports = {
   devServer: {
     open: true,
-    host: "aitschool.com",
+    host: "edu-www.aitschool.com",
     port: 80
   }
 };

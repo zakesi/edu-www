@@ -251,7 +251,7 @@ export default {
     handleGetWechatAuthURL() {
       authService
         .wechatAuthUrl({
-          redirect_url: "http://aitschool.com/social/wechat"
+          redirect_url: "http://edu-www.aitschool.com/social/wechat"
         })
         .then(res => {
           window.location.href = res.redirect;

@@ -8,7 +8,7 @@ yarn install
 ## Setting Host
 
 ```
-127.0.0.1 aitschool.com
+127.0.0.1 edu-www.aitschool.com
 ```
 
 > 测试微信登录需要开 80 端口和配置 host
