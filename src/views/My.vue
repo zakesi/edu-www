@@ -1,5 +1,137 @@
 <template>
-  <div class="page-content">
-    MY
+  <div class="my-page">
+    <div class="container-1080">
+      <div class="page-setting">
+        <div class="page-setting-sider">
+          <SettingSiderMenu default-active="/my" />
+        </div>
+        <div class="page-setting-content">
+          <div class="card-box">
+            <div class="card-box-title">
+              个人资料
+            </div>
+            <div class="card-box-content">
+              <el-form
+                ref="elForm"
+                :model="userInfo"
+                :rules="rules"
+                label-width="100px"
+                style="width:430px;"
+              >
+                <el-form-item label="昵称" prop="nickname">
+                  <el-input v-model="userInfo.name" placeholder="请输入昵称" />
+                </el-form-item>
+                <el-form-item label="性别" prop="sex">
+                  <el-select v-model="userInfo.sex" placeholder="请选择性别">
+                    <el-option
+                      v-for="item in sex"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                    />
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="生日">
+                  <el-date-picker
+                    v-model="userInfo.birthday"
+                    type="date"
+                    placeholder="请选择出生日期"
+                  />
+                </el-form-item>
+                <el-form-item label="个人简介">
+                  <el-input
+                    v-model="userInfo.introduction"
+                    style="width:340px;height: 120px;"
+                    type="textarea"
+                    :maxlength="200"
+                    :rows="5"
+                    placeholder="一句话啊介绍一下自己吧，让别人更了解你"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary">保存</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
+<script type="text/javascript">
+import SettingSiderMenu from "@/components/SettingSiderMenu.vue";
+
+export default {
+  components: {
+    SettingSiderMenu
+  },
+  data() {
+    return {
+      userInfo: {
+        sex: "",
+        name: "",
+        birthday: "",
+        introduction: ""
+      },
+      sex: [
+        {
+          id: 0,
+          name: "保密"
+        },
+        {
+          id: 1,
+          name: "男"
+        },
+        {
+          id: 2,
+          name: "女"
+        }
+      ],
+      rules: {
+        nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],
+        sex: [{ required: true, message: "请选择性别", trigger: "blur" }]
+      }
+    };
+  },
+  methods: {}
+};
+</script>
+
+<style type="text/css" lang="less" scoped>
+.my-page {
+  padding: 20px 0;
+}
+.page-setting {
+  display: flex;
+  .page-setting-sider {
+    flex: none;
+    margin-right: 20px;
+    background-color: #ffffff;
+    width: 240px;
+  }
+
+  .page-setting-content {
+    position: relative;
+    flex: 1;
+  }
+  .card-box {
+    background-color: #fff;
+    min-height: 436px;
+    padding: 30px 30px 60px 50px;
+    .card-box-title {
+      height: 33px;
+      margin-bottom: 30px;
+      font-size: 24px;
+      color: rgba(51, 51, 51, 1);
+      line-height: 33px;
+    }
+    .card-box-content {
+      position: relative;
+      padding: 45px 30px 0;
+      border-top: 1px solid #d8d8d8;
+    }
+  }
+}
+</style>
