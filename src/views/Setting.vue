@@ -1,5 +1,5 @@
 <template>
-  <div class="setting-page">
+  <div class="setting-page" v-loading="loading">
     <div class="container-1080">
       <div class="page-mainer">
         <div class="page-mainer-sider">
@@ -15,19 +15,19 @@
                 <div class="item">
                   <span class="name">手机号</span>
                   <span class="state">{{
-                    userInfo.phone_number ? userInfo.phone_number : "未绑定"
+                    userInfo.phone ? userInfo.phone : "未绑定"
                   }}</span>
                   <span class="operation" @click="handleOpenDialog">{{
-                    userInfo.phone_number ? "修改手机号" : "绑定手机"
+                    userInfo.phone ? "修改手机号" : "绑定手机"
                   }}</span>
                 </div>
                 <div class="item">
                   <span class="name">微信</span>
                   <span class="state">{{
-                    userInfo.has_bind_wechat ? "已绑定" : "未绑定"
+                    userInfo.unionid ? "已绑定" : "未绑定"
                   }}</span>
                   <span class="operation" @click="handleToggleWechat()">
-                    {{ userInfo.has_bind_wechat ? "解绑" : "绑定" }}
+                    {{ userInfo.unionid ? "解绑" : "绑定" }}
                   </span>
                 </div>
               </div>
@@ -36,16 +36,16 @@
         </div>
       </div>
       <el-dialog
-        :title="userInfo.phone_number ? '修改手机号' : '绑定手机'"
+        :title="userInfo.phone ? '修改手机号' : '绑定手机'"
         :visible.sync="phoneVerifyDialog"
         :center="true"
         :before-close="handleCloseDialog"
         width="360px"
       >
         <el-form ref="phoneVerifyFrom" :model="phoneVerifyFrom" :rules="rules">
-          <el-form-item prop="phone_number">
+          <el-form-item prop="phone">
             <el-input
-              v-model="phoneVerifyFrom.phone_number"
+              v-model="phoneVerifyFrom.phone"
               type="number"
               autocomplete="off"
               placeholder="请输入手机号"
@@ -74,78 +74,36 @@
           >
         </span>
       </el-dialog>
-      <!-- 手机验证身份弹窗 -->
-      <el-dialog
-        title="验证身份"
-        :visible.sync="authVerifyDialog"
-        width="500px"
-        height="340px"
-        :center="true"
-        :before-close="handleCloseDialog"
-      >
-        <div class="dialog-tip">
-          为了保证你的帐号安全，请验证身份。验证成功后进行下一步操作。
-        </div>
-        <el-form ref="authVerifyFrom" :model="authVerifyFrom" :rules="rules">
-          <el-form-item>
-            <el-input
-              :value="userInfo.phone_number"
-              type="number"
-              autocomplete="off"
-              disabled
-            />
-          </el-form-item>
-          <el-form-item prop="code" class="code-line">
-            <el-input
-              v-model="authVerifyFrom.code"
-              type="number"
-              autocomplete="off"
-              placeholder="请输入验证码"
-            />
-            <el-button :disabled="countDownDisable" @click="handleAuthMessage">
-              {{ countDownText }}
-            </el-button>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button
-            type="primary"
-            :loading="btnLoading"
-            :disabled="btnLoading"
-            @click="handleAuthVerify"
-            >确 定</el-button
-          >
-        </span>
-      </el-dialog>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
 import SettingSiderMenu from "@/components/SettingSiderMenu.vue";
-
+import authService from "@/globals/service/auth";
+import { mapState } from "vuex";
 export default {
   components: {
     SettingSiderMenu
   },
+  created() {},
+  computed: {
+    ...mapState(["userInfo"])
+  },
   data() {
     return {
-      userInfo: {},
+      loading: false,
       countDownText: "获取验证码",
       countDownInterval: null,
       countDownDisable: false,
       phoneVerifyDialog: false,
-      authVerifyDialog: false,
       btnLoading: false,
       phoneVerifyFrom: {
-        phone_number: "",
-        code: ""
-      },
-      authVerifyFrom: {
+        phone: "",
         code: ""
       },
       rules: {
-        phone_number: [
+        phone: [
           {
             required: true,
             message: "请输入手机号",
@@ -170,36 +128,41 @@ export default {
   methods: {
     // 绑定手机打开对话框
     handleOpenDialog() {
-      if (this.userInfo.phone_number) {
-        this.authVerifyDialog = true;
-      } else {
-        this.phoneVerifyDialog = true;
-      }
+      this.phoneVerifyDialog = true;
     },
     // 关闭绑定手机对话框
     handleCloseDialog(done) {
-      this.authVerifyFrom.code = "";
       this.countDownText = "获取验证码";
       this.countDownDisable = false;
       this.$refs.phoneVerifyFrom && this.$refs.phoneVerifyFrom.resetFields();
-      this.$refs.authVerifyFrom && this.$refs.authVerifyFrom.resetFields();
       this.countDownInterval && window.clearInterval(this.countDownInterval);
       done();
     },
     // 发送修改手机验证码
     handlePhoneMessage() {
-      this.$refs.phoneVerifyFrom.validateField("phone_number", errMsg => {
+      this.$refs.phoneVerifyFrom.validateField("phone", errMsg => {
         if (errMsg) {
           return;
         }
         this.countDownDisable = true;
-        this.countDownInterval = this._countDown();
+        authService
+          .smsSend({
+            phone: this.phoneVerifyFrom.phone
+          })
+          .then(res => {
+            const code = res.code;
+            if (code) {
+              this.$message.success({
+                message: "验证码：" + code,
+                duration: 9000
+              });
+            }
+            this.countDownInterval = this._countDown();
+          })
+          .catch(() => {
+            this.countDownDisable = false;
+          });
       });
-    },
-    // 发送身份认证验证码
-    handleAuthMessage() {
-      this.countDownDisable = true;
-      this._countDown();
     },
     // 验证码倒计时
     _countDown() {
@@ -215,40 +178,29 @@ export default {
         }
       }, 1000);
     },
-    // 进行身份验证
-    handleAuthVerify() {
-      this.$refs.authVerifyFrom.validateField("code", errMsg => {
-        if (errMsg) {
-          return;
-        }
-        // const params = this.authVerifyFrom
-        this.btnLoading = true;
-
-        this.btnLoading = false;
-        this.authVerifyDialog = false;
-        this.phoneVerifyDialog = true;
-        this.$message.success("身份验证成功！");
-        this.handleCloseDialog();
-      });
-    },
     // 进行手机修改验证
     handlePhoneVerify() {
       this.$refs.phoneVerifyFrom.validate(valid => {
         if (valid) {
-          // const params = this.phoneVerifyFrom
+          const { code, phone } = this.phoneVerifyFrom;
           this.btnLoading = true;
-
-          this.phoneVerifyDialog = false;
-          this.btnLoading = false;
-          this.$message.success("绑定成功！");
-          // this.userInfo.phone_number = res.phone_number;
-          this.handleCloseDialog();
+          authService
+            .phoneBind({ code, phone })
+            .then(() => {
+              this.phoneVerifyDialog = false;
+              this.$message.success("绑定成功！");
+              this.$store.commit("UPDATA_PHONE", phone);
+              this.handleCloseDialog();
+            })
+            .finally(() => {
+              this.btnLoading = false;
+            });
         }
       });
     },
     // 绑定微信
     handleToggleWechat() {
-      if (this.userInfo.has_bind_wechat) {
+      if (this.userInfo.unionid) {
         this.$confirm(
           "解绑后你将无法使用微信登录此账号，你确定要解绑吗？",
           "提示",
@@ -263,8 +215,25 @@ export default {
         this.handleBindWechat();
       }
     },
-    handleBindWechat() {},
-    handleUnBindWechat() {}
+    handleBindWechat() {
+      authService
+        .wechatAuthUrl({
+          redirect_url: "http://edu-www.aitschool.com/social/wechat-bind"
+        })
+        .then(res => {
+          window.location.href = res.redirect;
+        });
+    },
+    handleUnBindWechat() {
+      this.loading = true;
+      authService
+        .wechatAuthUnBind()
+        .then(() => {
+          this.$message.success("微信解绑成功！");
+          this.$store.commit("UPDATA_UNIONID", "");
+        })
+        .finally(() => (this.loading = false));
+    }
   }
 };
 </script>
@@ -272,12 +241,6 @@ export default {
 <style type="text/css" lang="less" scoped>
 .setting-page {
   padding: 20px 0;
-
-  .dialog-tip {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #999;
-  }
 }
 .page-mainer {
   display: flex;
@@ -336,21 +299,7 @@ export default {
     }
   }
 }
-/deep/.el-dialog__header {
-  padding: 20px;
-  font-size: 26px;
-  font-weight: 600;
-  color: rgba(51, 51, 51, 1);
-  line-height: 37px;
-}
-/deep/.el-dialog__body {
-  padding: 0 80px;
-}
-/deep/.el-input__inner {
-  border-radius: 0;
-  font-size: 14px;
-  color: rgba(213, 213, 213, 1);
-}
+
 .el-input {
   position: relative;
 }
@@ -365,25 +314,5 @@ export default {
   font-size: 12px;
   color: rgba(153, 153, 153, 1);
   background-color: transparent;
-}
-/deep/.el-button--primary {
-  width: 120px;
-  height: 40px;
-  background-color: #333333;
-  font-size: 16px;
-  font-weight: 500;
-  color: #ffffff;
-  text-align: center;
-  border: none;
-  outline: none;
-  border-radius: 0;
-  letter-spacing: -2px;
-}
-/deep/.el-dialog__footer {
-  padding: 0 0 43px;
-}
-/deep/.el-input__inner:focus {
-  border-color: #0fc700;
-  outline: 0;
 }
 </style>

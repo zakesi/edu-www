@@ -9,7 +9,6 @@ import "@/styles/common.less";
 import "@/utils/reset.js";
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
-
 new Vue({
   router,
   store,

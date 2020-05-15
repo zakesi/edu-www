@@ -1,5 +1,5 @@
 <template>
-  <div class="my-page">
+  <div class="my-page" v-loading="loading">
     <div class="container-1080">
       <div class="page-setting">
         <div class="page-setting-sider">
@@ -18,7 +18,7 @@
                 label-width="100px"
                 style="width:430px;"
               >
-                <el-form-item label="昵称" prop="nickname">
+                <el-form-item label="昵称" prop="name">
                   <el-input v-model="userInfo.name" placeholder="请输入昵称" />
                 </el-form-item>
                 <el-form-item label="性别" prop="sex">
@@ -49,7 +49,9 @@
                   />
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary">保存</el-button>
+                  <el-button type="primary" @click="handleSubmit"
+                    >保存</el-button
+                  >
                 </el-form-item>
               </el-form>
             </div>
@@ -62,6 +64,7 @@
 
 <script type="text/javascript">
 import SettingSiderMenu from "@/components/SettingSiderMenu.vue";
+import userService from "@/globals/service/user.js";
 
 export default {
   components: {
@@ -69,6 +72,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       userInfo: {
         sex: "",
         name: "",
@@ -76,26 +80,47 @@ export default {
         introduction: ""
       },
       sex: [
-        {
-          id: 0,
-          name: "保密"
-        },
-        {
-          id: 1,
-          name: "男"
-        },
-        {
-          id: 2,
-          name: "女"
-        }
+        { id: 0, name: "保密" },
+        { id: 1, name: "男" },
+        { id: 2, name: "女" }
       ],
       rules: {
-        nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],
+        name: [{ required: true, message: "请输入昵称", trigger: "blur" }],
         sex: [{ required: true, message: "请选择性别", trigger: "blur" }]
       }
     };
   },
-  methods: {}
+  created() {
+    userService
+      .userInfo()
+      .then(res => {
+        this.userInfo = res.userInfo;
+      })
+      .finally(() => (this.loading = false));
+  },
+  methods: {
+    handleSubmit() {
+      const { userInfo } = this;
+      this.$refs["elForm"].validate(valid => {
+        if (valid) {
+          this.loading = true;
+          userService
+            .updateUserInfo({
+              name: userInfo.name,
+              sex: userInfo.sex,
+              introduction: userInfo.introduction,
+              birthday: userInfo.birthday
+            })
+            .then(() => {
+              this.$message.success("用户信息更新成功！");
+            })
+            .finally(() => {
+              this.loading = false;
+            });
+        }
+      });
+    }
+  }
 };
 </script>
 

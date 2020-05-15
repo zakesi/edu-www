@@ -24,7 +24,20 @@
         </nav>
       </div>
       <div class="header-ft">
-        <el-dropdown style="height: 100%;" @command="handleCommand">
+        <div
+          class="bar-info-container"
+          v-if="!userInfo.id"
+          @click="handleNavToLogin"
+        >
+          <span class="header-loginandregister">登录</span>
+          <el-divider direction="vertical"></el-divider>
+          <span class="header-loginandregister">注册</span>
+        </div>
+        <el-dropdown
+          style="height: 100%;"
+          @command="handleCommand"
+          v-if="userInfo.id"
+        >
           <div class="bar-info-container">
             <i
               v-if="!userInfo.avatar"
@@ -54,14 +67,15 @@
   </header>
 </template>
 <script type="text/javascript">
+import { mapState } from "vuex";
+import DataStore from "@/globals/storage/index";
 export default {
   data() {
-    return {
-      userInfo: {}
-    };
+    return {};
   },
-  created() {},
-  computed: {},
+  computed: {
+    ...mapState(["userInfo"])
+  },
   methods: {
     handleCommand(command) {
       this[`handle${command}`]();
@@ -72,7 +86,13 @@ export default {
     handleGoSetting() {
       this.$router.push({ name: "Setting" });
     },
-    handleLogout() {}
+    handleNavToLogin() {
+      this.$router.push({ name: "AuthPhoneLogin" });
+    },
+    handleLogout() {
+      DataStore.removeToken();
+      window.location.reload();
+    }
   }
 };
 </script>
@@ -158,6 +178,9 @@ export default {
         margin: 0 10px;
       }
     }
+  }
+  .header-loginandregister {
+    color: #666;
   }
 }
 </style>

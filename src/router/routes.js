@@ -6,6 +6,7 @@ import My from "../views/My.vue";
 import Setting from "../views/Setting.vue";
 import AuthPhoneLogin from "../views/AuthPhoneLogin.vue";
 import AuthSocialWechat from "../views/AuthSocialWechat.vue";
+import AuthSocialWechatBind from "../views/AuthSocialWechatBind.vue";
 import BasicLayout from "@/components/BasicLayout.vue";
 
 const routes = [
@@ -56,6 +57,11 @@ const routes = [
     path: "/social/wechat",
     name: "AuthSocialWechat",
     component: AuthSocialWechat
+  },
+  {
+    path: "/social/wechat-bind",
+    name: "AuthSocialWechatBind",
+    component: AuthSocialWechatBind
   }
 ];
 
