@@ -117,15 +117,10 @@ export default {
         if (valid) {
           this.loading = true;
           userService
-            .updateUserInfo({
-              name: userInfo.name,
-              sex: userInfo.sex,
-              introduction: userInfo.introduction,
-              birthday: userInfo.birthday,
-              avatar_url: userInfo.avatar_url
-            })
+            .updateUserInfo(userInfo)
             .then(() => {
               this.$message.success("用户信息更新成功！");
+              this.$store.commit("USERINFO", userInfo);
             })
             .finally(() => {
               this.loading = false;
