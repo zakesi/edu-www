@@ -40,19 +40,19 @@
         >
           <div class="bar-info-container">
             <i
-              v-if="!userInfo.avatar"
+              v-if="!userInfo.avatar_url"
               class="el-icon-user-solid userInfo-avatar"
             ></i>
-            <img v-else class="userInfo-avatar" :src="userInfo.avatar" />
+            <img v-else class="userInfo-avatar" :src="userInfo.avatar_url" />
             <span class="userInfo-name">{{ userInfo.realname }}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-user" command="GoMy"
-              >个人中心</el-dropdown-item
+              >个人设置</el-dropdown-item
             >
             <el-dropdown-item icon="el-icon-setting" command="GoSetting"
-              >个人设置</el-dropdown-item
+              >账号安全</el-dropdown-item
             >
             <el-dropdown-item
               icon="el-icon-video-pause"

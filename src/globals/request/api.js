@@ -4,6 +4,7 @@ const PREFIX_API = "https://neon.jiker.vip/api";
 export default {
   smsSend: `${PREFIX_API}/sms/send`,
   smsLogin: `${PREFIX_API}/sms/login`,
+  qiniuToken: `${PREFIX_API}/qiniu/token`,
   socialWechat: `${PREFIX_API}/auth/social/wechat`,
   socialWechatUrl: `${PREFIX_API}/auth/social/wechat/url`,
   userInfo: `${PREFIX_API}/user/user-info`,

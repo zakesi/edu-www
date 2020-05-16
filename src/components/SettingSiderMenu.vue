@@ -6,7 +6,7 @@
       class="el-menu-vertical"
     >
       <el-menu-item index="/my">
-        <span slot="title">个人资料</span>
+        <span slot="title">个人设置</span>
       </el-menu-item>
       <el-menu-item index="/setting">
         <span slot="title">账号安全</span>

@@ -18,6 +18,13 @@
                 label-width="100px"
                 style="width:430px;"
               >
+                <el-form-item label="头像">
+                  <upload-image
+                    class="userInfo-avatar"
+                    :image-path.sync="userInfo.avatar_url"
+                    @upload-success="handleUploadAvatar"
+                  />
+                </el-form-item>
                 <el-form-item label="昵称" prop="name">
                   <el-input v-model="userInfo.name" placeholder="请输入昵称" />
                 </el-form-item>
@@ -63,12 +70,14 @@
 </template>
 
 <script type="text/javascript">
+import uploadImageAvatar from "@/components/UploadImageAvatar.vue";
 import SettingSiderMenu from "@/components/SettingSiderMenu.vue";
 import userService from "@/globals/service/user.js";
 
 export default {
   components: {
-    SettingSiderMenu
+    SettingSiderMenu,
+    "upload-image": uploadImageAvatar
   },
   data() {
     return {
@@ -99,6 +108,9 @@ export default {
       .finally(() => (this.loading = false));
   },
   methods: {
+    handleUploadAvatar() {
+      this.$message.success("头像上传成功，请保存生效！");
+    },
     handleSubmit() {
       const { userInfo } = this;
       this.$refs["elForm"].validate(valid => {
@@ -109,7 +121,8 @@ export default {
               name: userInfo.name,
               sex: userInfo.sex,
               introduction: userInfo.introduction,
-              birthday: userInfo.birthday
+              birthday: userInfo.birthday,
+              avatar_url: userInfo.avatar_url
             })
             .then(() => {
               this.$message.success("用户信息更新成功！");
@@ -136,7 +149,6 @@ export default {
     background-color: #ffffff;
     width: 240px;
   }
-
   .page-setting-content {
     position: relative;
     flex: 1;
@@ -157,6 +169,14 @@ export default {
       padding: 45px 30px 0;
       border-top: 1px solid #d8d8d8;
     }
+  }
+  .userInfo-avatar {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: -2px;
+    border-radius: 50%;
+    overflow: hidden;
   }
 }
 </style>
