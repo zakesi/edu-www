@@ -16,15 +16,36 @@
         </el-carousel>
       </div>
     </div>
+    <div class="course-section">
+      <div class="container-1080">
+        <div class="section-title">最新课程</div>
+        <div class="section-description">最新的课程是最好的课程</div>
+        <div class="course-content">
+          <template v-for="item in courses">
+            <router-link
+              :key="item.id"
+              class="course-item"
+              :to="{ name: 'CourseItem', params: { id: item.id } }"
+            >
+              <basic-course class="course-item" />
+            </router-link>
+          </template>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import BasicCardCourse from "@/components/BasicCardCourse.vue";
 export default {
   name: "Home",
-  components: {},
+  components: {
+    "basic-course": BasicCardCourse
+  },
   data() {
     return {
+      courses: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
       banners: [
         {
           id: 1,
@@ -60,14 +81,12 @@ export default {
   line-height: 20px;
   margin-top: 40px;
   margin-bottom: 10px;
-  text-align: center;
 }
 .section-description {
   font-size: 14px;
   color: #666;
   line-height: 14px;
   margin-bottom: 20px;
-  text-align: center;
 }
 .banner-section {
   .banner-carousel-item {
@@ -77,6 +96,12 @@ export default {
     background-position: center;
     // background-repeat: no-repeat;
     background-size: cover;
+  }
+}
+.course-section {
+  .course-content {
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>
