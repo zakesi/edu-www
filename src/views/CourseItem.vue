@@ -27,7 +27,11 @@
           >
             <div class="course-catelog-dt">{{ item.name }}</div>
             <template v-for="data in item.sections">
-              <div class="course-catelog-dd" :key="data.id">
+              <div
+                class="course-catelog-dd"
+                :key="data.id"
+                @click="handlePlay(item.id, data.id)"
+              >
                 <div class="course-catelog-title">{{ data.name }}</div>
                 <div class="course-catelog-ft">开始学习</div>
               </div>
@@ -40,52 +44,49 @@
 </template>
 
 <script>
+import courseService from "@/globals/service/course.js";
 export default {
   data() {
     return {
-      loading: false,
+      loading: true,
       course: {
-        id: 1,
-        name: "HTML",
-        short_name: "HTML 基础",
-        tips: "Web 入门必修课",
-        description: "HTML 描述",
-        status: 1,
-        image_url:
-          "https://q2.cdn.youked.com/jingpin/2018/1224/RFah3LhRjuzG55LUBgzY5zhBm0S46ptkg0Q7aGSi.png",
-        chapters: [
-          {
-            id: 1,
-            name: "第一章",
-            sections: [
-              {
-                id: 1,
-                name: "第一节"
-              },
-              {
-                id: 2,
-                name: "第二节"
-              }
-            ]
-          },
-          {
-            id: 2,
-            name: "第二章",
-            sections: [
-              {
-                id: 3,
-                name: "第三节"
-              }
-            ]
-          }
-        ]
+        id: null,
+        name: "",
+        short_name: "",
+        tips: "",
+        description: "",
+        status: null,
+        image_url: "",
+        chapters: []
       }
     };
   },
-  watch: {},
-  created() {},
+  created() {
+    this.getData();
+  },
   methods: {
-    getData() {}
+    getData() {
+      const id = this.$route.params.id;
+      courseService
+        .item(id)
+        .then(res => {
+          this.course = res.course;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    handlePlay(chapterId, sectionId) {
+      const courseId = this.$route.params.id;
+      this.$router.push({
+        name: "CourseSection",
+        params: {
+          courseId,
+          chapterId,
+          sectionId
+        }
+      });
+    }
   }
 };
 </script>

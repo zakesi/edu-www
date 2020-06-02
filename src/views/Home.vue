@@ -27,7 +27,7 @@
               class="course-item"
               :to="{ name: 'CourseItem', params: { id: item.id } }"
             >
-              <basic-course class="course-item" />
+              <basic-course :data="item" />
             </router-link>
           </template>
         </div>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import courseService from "@/globals/service/course.js";
 import BasicCardCourse from "@/components/BasicCardCourse.vue";
 export default {
   name: "Home",
@@ -45,7 +46,7 @@ export default {
   },
   data() {
     return {
-      courses: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
+      courses: [],
       banners: [
         {
           id: 1,
@@ -67,6 +68,12 @@ export default {
         }
       ]
     };
+  },
+  created() {
+    courseService.recommand().then(res => {
+      console.log(res);
+      this.courses = res.courses;
+    });
   }
 };
 </script>
@@ -101,7 +108,16 @@ export default {
 .course-section {
   .course-content {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .course-item {
+    margin-right: 16px;
+    &:nth-child(4n) {
+      margin-right: 0;
+    }
+    &:nth-child(n + 5) {
+      margin-top: 16px;
+    }
   }
 }
 </style>

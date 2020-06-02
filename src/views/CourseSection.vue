@@ -26,7 +26,7 @@
 import BasicPlatformLayout from "@/components/BasicPlatformLayout.vue";
 import BasicVideoPlay from "@/components/BasicVideoPlay.vue";
 import MarkdownIt from "@jiker/markdown-it/MarkdownIt.vue";
-
+import courseService from "@/globals/service/course.js";
 export default {
   components: {
     MarkdownIt,
@@ -42,43 +42,17 @@ export default {
       sectionId: null,
       defaultActive: "",
       course: {
-        id: 1,
-        name: "HTML",
-        short_name: "HTML 基础",
-        tips: "Web 入门必修课",
-        description: "HTML 描述"
+        id: null,
+        name: "",
+        short_name: "",
+        tips: "",
+        description: ""
       },
-      chapters: [
-        {
-          id: 1,
-          name: "第一章",
-          sections: [
-            {
-              id: 1,
-              name: "第一节"
-            },
-            {
-              id: 2,
-              name: "第二节"
-            }
-          ]
-        },
-        {
-          id: 2,
-          name: "第二章",
-          sections: [
-            {
-              id: 3,
-              name: "第三节"
-            }
-          ]
-        }
-      ],
+      chapters: [],
       section: {
-        name: "DTD",
-        content: "# #内容",
-        video_url:
-          "https://s3.pstatp.com/aweme/resource/web/static/image/index/tvc-v3_0b9db49.mp4"
+        name: "",
+        content: "",
+        video_url: ""
       }
     };
   },
@@ -97,10 +71,28 @@ export default {
   },
   methods: {
     getData() {
-      this.setMenuRoutes();
+      this.getDataCourse();
     },
-    getDataCourse() {},
-    getDataSection() {},
+    getDataCourse() {
+      const id = this.$route.params.courseId;
+      courseService
+        .item(id)
+        .then(res => {
+          this.course = res.course;
+          this.chapters = res.course.chapters;
+          this.getDataSection();
+          this.setMenuRoutes();
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    getDataSection() {
+      const id = this.$route.params.sectionId;
+      courseService.sectionItem(id).then(res => {
+        this.section = res.section;
+      });
+    },
     setMenuRoutes() {
       const { courseId, chapterId, sectionId, chapters } = this;
       this.defaultActive = `${chapterId}-${sectionId}`;

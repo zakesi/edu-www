@@ -1,15 +1,12 @@
 <template>
   <div class="card-course">
     <div class="card-course-img-container">
-      <img :src="data.cover_url" class="card-course-img" />
+      <img :src="data.image_url" class="card-course-img" />
     </div>
     <div class="card-course-content">
       <div class="card-course-title">{{ data.name }}</div>
-      <div class="card-course-info">{{ data.tips }}</div>
+      <div class="card-course-info">{{ data.short_name }}</div>
     </div>
-    <span v-if="data.difficulty_level_label" class="card-course-tag">
-      {{ data.difficulty_level_label }}</span
-    >
   </div>
 </template>
 <script type="text/javascript">
@@ -20,8 +17,8 @@ export default {
       default: () => ({
         name: "课程名称",
         difficulty_level_label: "难度",
-        tips: "课程提示",
-        cover_url:
+        short_name: "课程提示",
+        image_url:
           "https://q2.cdn.youked.com/jingpin/2018/1224/RFah3LhRjuzG55LUBgzY5zhBm0S46ptkg0Q7aGSi.png"
       })
     }
@@ -73,23 +70,6 @@ export default {
       font-size: 12px;
       color: #666;
     }
-  }
-  .card-course-tag {
-    position: absolute;
-    display: block;
-    height: 20px;
-    padding: 0 8px;
-    line-height: 20px;
-    top: -2px;
-    right: 15px;
-    font-size: 12px;
-    text-align: center;
-    background: linear-gradient(
-      180deg,
-      rgba(229, 198, 118, 1) 0%,
-      rgba(230, 162, 60, 1) 100%
-    );
-    color: #fff;
   }
 }
 </style>

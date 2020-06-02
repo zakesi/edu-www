@@ -9,5 +9,10 @@ export default {
   socialWechatUrl: `${PREFIX_API}/auth/social/wechat/url`,
   userInfo: `${PREFIX_API}/user/user-info`,
   userWechatBind: `${PREFIX_API}/user/wechat-bind`,
-  userPhoneBind: `${PREFIX_API}/user/phone-bind`
+  userPhoneBind: `${PREFIX_API}/user/phone-bind`,
+  courseRecommand: `${PREFIX_API}/course/www-recommand`,
+  courseItem: id => `${PREFIX_API}/course/${id}`,
+  sectionItem: id => `${PREFIX_API}/section/${id}`,
+  zhiyeRecommand: `${PREFIX_API}/zhiye/www-recommand`,
+  zhiyeItem: id => `${PREFIX_API}/zhiye/${id}`
 };

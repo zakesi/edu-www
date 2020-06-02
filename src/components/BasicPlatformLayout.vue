@@ -19,7 +19,7 @@
               :text-color="textColor"
               :active-text-color="activeTextColor"
             >
-              <template v-for="route in filterRoutes(menuRoutes)">
+              <template v-for="route in menuRoutes">
                 <el-submenu
                   :title="`${route.title}${startAtText(route)}`"
                   v-if="hasNavChildren(route)"
@@ -34,8 +34,7 @@
 
                   <template v-if="!route.disabled">
                     <el-menu-item
-                      :title="routeItem.title"
-                      v-for="routeItem in filterRoutes(route.children)"
+                      v-for="routeItem in route.children"
                       :key="routeItem.name + '-' + routeItem.id"
                       :index="route.id + '-' + routeItem.id"
                       :route="{
@@ -183,9 +182,6 @@ export default {
     hasNavChildren(route) {
       const children = route.children || [];
       return children.length;
-    },
-    filterRoutes(routes) {
-      return routes;
     },
     startAtText(route) {
       return route.start_at ? "\n项目开启时间：" + route.start_at : "";
