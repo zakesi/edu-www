@@ -3,7 +3,7 @@ import { Message } from "element-ui";
 import DataStore from "@/globals/storage/index";
 
 const axiosInstance = axios.create();
-axiosInstance.defaults.timeout = 2000;
+axiosInstance.defaults.timeout = 20000;
 
 axiosInstance.interceptors.request.use(
   config => {

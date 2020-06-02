@@ -108,8 +108,8 @@ export default {
               name: "CourseSection",
               params: {
                 courseId,
-                chapterId,
-                sectionId
+                chapterId: data.id,
+                sectionId: item.id
               }
             };
           })
