@@ -13,6 +13,7 @@ export default {
   courseRecommand: `${PREFIX_API}/course/www-recommand`,
   courseItem: id => `${PREFIX_API}/course/${id}`,
   sectionItem: id => `${PREFIX_API}/section/${id}`,
+  zhiye: `${PREFIX_API}/zhiye`,
   zhiyeRecommand: `${PREFIX_API}/zhiye/www-recommand`,
   zhiyeItem: id => `${PREFIX_API}/zhiye/${id}`
 };

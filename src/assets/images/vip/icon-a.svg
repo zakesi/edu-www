@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="26px" viewBox="0 0 22 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>形状结合</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="会员" transform="translate(-100.000000, -1231.000000)" fill-rule="nonzero">
+            <g id="编组-7" transform="translate(100.000000, 1139.000000)">
+                <g id="A" transform="translate(0.000000, 92.000000)">
+                    <polygon id="直线-2" fill="#0FC700" points="17.766 15.9769787 17.766 18.9769787 4.266 18.9769787 4.266 15.9769787"></polygon>
+                    <path d="M12.6378052,2 L20.532,22.976 L16.259,22.976 L10.766,8.38097867 L5.272,22.976 L1,22.976 L8.89419478,2 L12.6378052,2 Z" id="形状结合" fill="#333333"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

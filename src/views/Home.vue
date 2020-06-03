@@ -71,7 +71,6 @@ export default {
   },
   created() {
     courseService.recommand().then(res => {
-      console.log(res);
       this.courses = res.courses;
     });
   }

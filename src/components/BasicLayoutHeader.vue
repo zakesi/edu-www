@@ -12,7 +12,7 @@
           <router-link :to="{ name: 'Home' }" class="header-nav-item"
             >首页</router-link
           >
-          <router-link :to="{ name: 'Course' }" class="header-nav-item"
+          <router-link :to="{ name: 'Zhiye' }" class="header-nav-item"
             >职业课</router-link
           >
           <router-link :to="{ name: 'Project' }" class="header-nav-item"

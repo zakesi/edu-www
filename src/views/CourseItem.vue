@@ -3,8 +3,8 @@
     <div class="container-1080" v-loading="loading">
       <div class="course-breadcrumb">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ name: 'Course' }"
-            >视频课</el-breadcrumb-item
+          <el-breadcrumb-item :to="{ name: 'Zhiye' }"
+            >职业课</el-breadcrumb-item
           >
           <el-breadcrumb-item>{{ course.name }}</el-breadcrumb-item>
         </el-breadcrumb>
@@ -14,8 +14,12 @@
           <img class="course-img" :src="course.image_url" />
         </div>
         <div class="course-information-right">
-          <div class="course-name">{{ course.name }}</div>
+          <div class="course-name">
+            {{ course.name }}
+            <span class="course-shortname">{{ course.short_name }}</span>
+          </div>
           <div class="course-description">{{ course.description }}</div>
+          <div class="course-tips">{{ course.tips }}</div>
         </div>
       </div>
       <div class="course-content">
@@ -130,13 +134,21 @@ export default {
       font-size: 20px;
       line-height: 20px;
       color: #333;
+      .course-shortname {
+        margin-left: 12px;
+        font-size: 14px;
+        color: #666;
+      }
     }
     .course-description {
       font-size: 14px;
       color: #666;
       line-height: 24px;
-      min-height: 80px;
-      margin-bottom: 25px;
+      margin-bottom: 12px;
+    }
+    .course-tips {
+      font-size: 12px;
+      color: #999;
     }
   }
 }

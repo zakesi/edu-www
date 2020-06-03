@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="26px" viewBox="0 0 22 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>矩形</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="会员" transform="translate(-100.000000, -1139.000000)" fill-rule="nonzero">
+            <g id="编组-7" transform="translate(100.000000, 1139.000000)">
+                <g id="Q">
+                    <path d="M10.5,1 C5.80557963,1 2,4.80557963 2,9.5 L2,16.5 C2,21.1944204 5.80557963,25 10.5,25 C15.1944204,25 19,21.1944204 19,16.5 L19,9.5 C19,4.80557963 15.1944204,1 10.5,1 Z M10.5,5 C12.9852814,5 15,7.01471863 15,9.5 L15,16.5 C15,18.9852814 12.9852814,21 10.5,21 C8.01471863,21 6,18.9852814 6,16.5 L6,9.5 C6,7.01471863 8.01471863,5 10.5,5 Z" id="矩形" fill="#333333"></path>
+                    <polygon id="直线-4" fill="#0FC700" points="12.2278812 15.4212956 21.2278812 22.4212956 18.7721188 25.5787044 9.77211877 18.5787044"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

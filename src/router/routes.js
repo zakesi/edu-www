@@ -1,5 +1,6 @@
 import Home from "../views/Home.vue";
-import Course from "../views/Course.vue";
+import Zhiye from "../views/Zhiye.vue";
+import ZhiyeItem from "../views/ZhiyeItem.vue";
 import CourseItem from "../views/CourseItem.vue";
 import CourseSection from "../views/CourseSection.vue";
 import Project from "../views/Project.vue";
@@ -24,9 +25,14 @@ const routes = [
         component: Home
       },
       {
-        path: "/course",
-        name: "Course",
-        component: Course
+        path: "/zhiye",
+        name: "Zhiye",
+        component: Zhiye
+      },
+      {
+        path: "/zhiye/:id",
+        name: "ZhiyeItem",
+        component: ZhiyeItem
       },
       {
         path: "/course/:id",
