@@ -7,6 +7,7 @@ import Project from "../views/Project.vue";
 import Evaluation from "../views/Evaluation.vue";
 import My from "../views/My.vue";
 import Setting from "../views/Setting.vue";
+import Resume from "../views/Resume.vue";
 import AuthPhoneLogin from "../views/AuthPhoneLogin.vue";
 import AuthSocialWechat from "../views/AuthSocialWechat.vue";
 import AuthSocialWechatBind from "../views/AuthSocialWechatBind.vue";
@@ -58,6 +59,11 @@ const routes = [
         path: "/setting",
         name: "Setting",
         component: Setting
+      },
+      {
+        path: "/resume",
+        name: "Resume",
+        component: Resume
       }
     ]
   },
