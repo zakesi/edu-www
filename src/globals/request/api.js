@@ -15,5 +15,7 @@ export default {
   sectionItem: id => `${PREFIX_API}/section/${id}`,
   zhiye: `${PREFIX_API}/zhiye`,
   zhiyeRecommand: `${PREFIX_API}/zhiye/www-recommand`,
-  zhiyeItem: id => `${PREFIX_API}/zhiye/${id}`
+  zhiyeItem: id => `${PREFIX_API}/zhiye/${id}`,
+  stack: `${PREFIX_API}/stack`,
+  stackRandom: id => `${PREFIX_API}/stack/${id}/random`
 };

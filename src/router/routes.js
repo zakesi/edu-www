@@ -5,6 +5,7 @@ import CourseItem from "../views/CourseItem.vue";
 import CourseSection from "../views/CourseSection.vue";
 import Project from "../views/Project.vue";
 import Evaluation from "../views/Evaluation.vue";
+import EvaluationItem from "../views/EvaluationItem.vue";
 import My from "../views/My.vue";
 import Setting from "../views/Setting.vue";
 import AuthPhoneLogin from "../views/AuthPhoneLogin.vue";
@@ -48,6 +49,11 @@ const routes = [
         path: "/evaluation",
         name: "Evaluation",
         component: Evaluation
+      },
+      {
+        path: "/evaluation/:id",
+        name: "EvaluationItem",
+        component: EvaluationItem
       },
       {
         path: "/my",
