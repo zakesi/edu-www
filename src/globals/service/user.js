@@ -7,6 +7,12 @@ const userService = {
   },
   updateUserInfo: function(params) {
     return request.put(API.userInfo, params);
+  },
+  updateResume: function(params) {
+    return request.put(API.userResume, params);
+  },
+  showResume: function() {
+    return request.get(API.userResume);
   }
 };
 

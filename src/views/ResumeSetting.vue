@@ -20,7 +20,7 @@
                 <el-form-item label="应聘岗位">
                   <el-input
                     :size="inputSize"
-                    v-model="form.name"
+                    v-model="form.job"
                     placeholder="请输入岗位名称"
                   />
                 </el-form-item>
@@ -33,9 +33,9 @@
                   >
                     <el-option
                       v-for="item in cityOption"
-                      :key="item.id"
+                      :key="item.name"
                       :label="item.name"
-                      :value="item.id"
+                      :value="item.name"
                     />
                   </el-select>
                 </el-form-item>
@@ -49,6 +49,7 @@
                       :size="inputSize"
                       class="item"
                       v-model="item.date"
+                      value-format="yyyy.M"
                       type="monthrange"
                       range-separator="至"
                       start-placeholder="开始月份"
@@ -117,6 +118,7 @@
                     v-model="skillList"
                     class="add-skill-list"
                     placeholder="请输入技能领域 例: 前端框架"
+                    @keyup.enter.native="handleAddSkill"
                   >
                     <el-button
                       slot="append"
@@ -167,6 +169,137 @@
                     </el-button>
                   </div>
                 </el-form-item>
+                <el-form-item label="项目经验">
+                  <div
+                    class="items-list"
+                    v-for="(item, index) in form.items"
+                    :key="index"
+                  >
+                    <div class="item">
+                      <label class="item-label">项目名称</label>
+                      <el-input
+                        :size="inputSize"
+                        class="item-input"
+                        v-model="item.name"
+                        placeholder="请输入项目名称"
+                      />
+                    </div>
+                    <div class="item">
+                      <label class="item-label">项目时间</label>
+                      <el-date-picker
+                        :size="inputSize"
+                        class="item-input"
+                        v-model="item.date"
+                        type="monthrange"
+                        value-format="yyyy.M"
+                        range-separator="至"
+                        start-placeholder="开始月份"
+                        end-placeholder="结束月份"
+                      >
+                      </el-date-picker>
+                    </div>
+                    <div class="item">
+                      <label class="item-label">项目地址</label>
+                      <el-input
+                        :size="inputSize"
+                        class="item-input"
+                        v-model="item.address"
+                        placeholder="请输入项目地址"
+                      />
+                    </div>
+                    <div class="item">
+                      <label class="item-label">项目描述</label>
+                      <el-input
+                        :size="inputSize"
+                        class="item-input"
+                        v-model="item.description"
+                        type="textarea"
+                        :maxlength="200"
+                        :rows="3"
+                        placeholder="请输入项目描述"
+                      />
+                    </div>
+                    <div class="item">
+                      <label class="item-label">我的职能</label>
+                      <el-input
+                        :size="inputSize"
+                        v-model="item.itemsFunction"
+                        class="item-input"
+                        placeholder="请输入工作中我的职能"
+                      >
+                        <el-button
+                          slot="append"
+                          icon="el-icon-plus"
+                          @click="handleAddItemsFunc(index)"
+                        ></el-button>
+                      </el-input>
+                    </div>
+                    <div class="item">
+                      <label class="item-label"></label>
+                      <div class="item-func">
+                        <div
+                          class="func-value"
+                          v-for="(item, funcIndex) in form.items[index]
+                            .function"
+                          :key="funcIndex"
+                        >
+                          {{ "- " + item }}
+                          <span
+                            class="del-func"
+                            @click="
+                              form.items[index].function.splice(funcIndex, 1)
+                            "
+                          >
+                            <i class="el-icon-remove-outline"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <label class="item-label">相关技术</label>
+                      <div class="item-skill">
+                        <el-tag
+                          :size="inputSize"
+                          v-for="(tag, tagIndex) in item.tech"
+                          :key="tagIndex"
+                          closable
+                          @close="form.items[index].tech.splice(tagIndex, 1)"
+                          :disable-transitions="false"
+                        >
+                          {{ tag }}
+                        </el-tag>
+                        <el-input
+                          size="mini"
+                          class="skill-new-tag"
+                          v-if="item.inputVisible"
+                          v-model="item.inputValue"
+                          ref="techInput"
+                          @keyup.enter.native="handleAddTechItem(index)"
+                          @blur="handleAddTechItem(index)"
+                        >
+                        </el-input>
+                        <el-button
+                          v-else
+                          :size="inputSize"
+                          class="button-new-tag"
+                          @click="techInputShow(index)"
+                        >
+                          Add Tag
+                        </el-button>
+                      </div>
+                    </div>
+                    <div
+                      v-show="index > 0"
+                      class="del-items"
+                      @click="handleDelItems(index)"
+                    >
+                      <i class="el-icon-remove-outline"></i>
+                    </div>
+                    <div class="add-items" @click="handleAddItems">
+                      <i class="el-icon-circle-plus-outline"></i>
+                    </div>
+                  </div>
+                </el-form-item>
                 <el-form-item>
                   <el-button
                     :size="inputSize"
@@ -174,6 +307,13 @@
                     type="primary"
                     @click="handleSubmit"
                     >保存</el-button
+                  >
+                  <el-button
+                    :size="inputSize"
+                    class="view-resume"
+                    type="success"
+                    @click="goResume"
+                    >查看个人简历</el-button
                   >
                 </el-form-item>
               </el-form>
@@ -187,7 +327,7 @@
 
 <script type="text/javascript">
 import SettingSiderMenu from "@/components/SettingSiderMenu.vue";
-// import { mapState } from "vuex";
+import userService from "@/globals/service/user.js";
 
 export default {
   components: {
@@ -214,16 +354,45 @@ export default {
             active: false
           }
         ],
-        skills: []
+        skills: [],
+        items: [
+          {
+            name: "",
+            date: "",
+            address: "",
+            description: "",
+            function: [],
+            tech: [],
+            inputVisible: false,
+            inputValue: "",
+            inputFunction: ""
+          }
+        ]
       },
       skillList: "",
-      cityOption: [
-        { id: 1, name: "北京" },
-        { id: 2, name: "上海" }
-      ]
+      cityOption: [{ name: "北京" }, { name: "上海" }]
     };
   },
+  created() {
+    this.getData();
+  },
   methods: {
+    getData() {
+      this.loading = true;
+      userService
+        .showResume()
+        .then(res => {
+          if (res.resume) {
+            for (let key in res.resume) {
+              if (key !== "job") res.resume[key] = JSON.parse(res.resume[key]);
+            }
+            this.form = res.resume;
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     // 增加工作经历
     handleAddExperience() {
       this.form.experience.push({
@@ -275,10 +444,71 @@ export default {
         this.$refs.skillTageInput[0].$refs.input.focus();
       });
     },
+    // 增加项目经验 我的职能
+    handleAddItemsFunc(index) {
+      let func = this.form.items[index].itemsFunction;
+      if (!func.trim()) {
+        this.$message.error("未输入内容");
+        return;
+      }
+      this.form.items[index].function.push(func);
+      this.form.items[index].itemsFunction = "";
+    },
+    // 增加项目经验 相关技术
+    handleAddTechItem(index) {
+      let tagValue = this.form.items[index].inputValue;
+      if (tagValue) {
+        this.form.items[index].tech.push(tagValue);
+      }
+      this.form.items[index].inputVisible = false;
+      this.form.items[index].inputValue = "";
+    },
+    // 展示项目经验 相关技术输入框
+    techInputShow(index) {
+      this.form.items[index].inputVisible = true;
+      this.$nextTick(() => {
+        this.$refs.techInput[0].$refs.input.focus();
+      });
+    },
+    // 增加项目经验 列表
+    handleAddItems() {
+      this.form.items.push({
+        name: "",
+        date: "",
+        address: "",
+        description: "",
+        function: [],
+        tech: [],
+        inputVisible: false,
+        inputValue: ""
+      });
+    },
+    // 删除项目经验 列表
+    handleDelItems(index) {
+      this.$confirm("确认删除该项目？").then(() => {
+        this.form.items.splice(index, 1);
+      });
+    },
     handleSubmit() {
-      let { form } = this;
-      console.log(form);
-    }
+      this.loading = true;
+      let form = Object.assign({}, this.form);
+      form.city = JSON.stringify(form.city);
+      form.experience = JSON.stringify(form.experience);
+      form.capability = JSON.stringify(form.capability);
+      form.skills = JSON.stringify(form.skills);
+      form.items = JSON.stringify(form.items);
+      userService
+        .updateResume(form)
+        .then(() => {
+          this.$message.success({
+            message: "保存成功！"
+          });
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    goResume() {}
   }
 };
 </script>
@@ -357,7 +587,7 @@ export default {
           width: 20px;
         }
         .item {
-          margin: 0 10px 10px 10px;
+          margin: 0 10px 5px 0px;
           width: 400px;
         }
         .del-capability {
@@ -400,6 +630,81 @@ export default {
           }
         }
       }
+      .items-list {
+        width: 500px;
+        background: #f7f7f7;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        position: relative;
+        .item {
+          display: flex;
+          align-items: center;
+          margin-bottom: 5px;
+          .item-label {
+            flex: none;
+            width: 60px;
+            font-size: 12px;
+            color: #555;
+          }
+          .item-input {
+            width: 380px;
+          }
+          .item-func {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.5;
+            width: 400px;
+            word-wrap: break-word;
+            .func-value {
+              margin: 4px 0;
+              .del-func {
+                width: 15px;
+                height: 15px;
+                font-size: 15px;
+                color: #f56c6c;
+                cursor: pointer;
+                margin-left: 5px;
+              }
+            }
+          }
+          .item-skill {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap;
+            .el-tag {
+              margin: 0px 10px 5px 0;
+            }
+            .button-new-tag {
+              margin: 0px 5px 5px 0;
+              line-height: 2;
+              padding-top: 0;
+              padding-bottom: 0;
+            }
+            .skill-new-tag {
+              width: 100px;
+              margin-right: 5px;
+            }
+          }
+        }
+        .add-items {
+          position: absolute;
+          right: -30px;
+          bottom: 0px;
+          font-size: 20px;
+          color: #409eff;
+          cursor: pointer;
+        }
+        .del-items {
+          position: absolute;
+          right: -30px;
+          top: 0;
+          font-size: 20px;
+          color: #f56c6c;
+          cursor: pointer;
+        }
+      }
       .add-experience {
         position: absolute;
         bottom: 20px;
@@ -410,6 +715,9 @@ export default {
       }
       .add-skill-list {
         margin-top: 4px;
+      }
+      .view-resume {
+        margin-left: 10px;
       }
     }
   }

@@ -54,6 +54,9 @@
             <el-dropdown-item icon="el-icon-setting" command="GoSetting"
               >账号安全</el-dropdown-item
             >
+            <el-dropdown-item icon="el-icon-document" command="GoResume"
+              >个人简历</el-dropdown-item
+            >
             <el-dropdown-item
               icon="el-icon-video-pause"
               command="Logout"
@@ -85,6 +88,9 @@ export default {
     },
     handleGoSetting() {
       this.$router.push({ name: "Setting" });
+    },
+    handleGoResume() {
+      this.$router.push({ name: "ResumeSetting" });
     },
     handleNavToLogin() {
       this.$router.push({ name: "AuthPhoneLogin" });

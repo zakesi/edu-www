@@ -11,7 +11,7 @@
       <el-menu-item index="/setting">
         <span slot="title">账号安全</span>
       </el-menu-item>
-      <el-menu-item index="/resume">
+      <el-menu-item index="/resume/setting">
         <span slot="title">简历中心</span>
       </el-menu-item>
     </el-menu>
