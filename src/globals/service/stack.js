@@ -7,6 +7,9 @@ const userService = {
   },
   random: function(id, params) {
     return request.get(API.stackRandom(id), params);
+  },
+  recommand: function(params) {
+    return request.get(API.stackRecommand, params);
   }
 };
 

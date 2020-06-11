@@ -18,11 +18,11 @@ class DataStore {
   }
 
   getToken() {
-    return this.storage.get("token");
+    return this.storage.get("web_token");
   }
 
   setToken(token) {
-    this.storage.set("token", token);
+    this.storage.set("web_token", token);
   }
 
   removeToken() {

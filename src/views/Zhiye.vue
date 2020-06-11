@@ -1,6 +1,6 @@
 <template>
-  <div class="home-page">
-    <div class="banner-section">
+  <div class="home-page" v-loading="loading">
+    <div class="banner-section" v-if="false">
       <div class="container container-1080">
         <div class="banner-img">
           <img src="@/assets/images/vip/banner-bg.png" />
@@ -84,13 +84,17 @@ export default {
   },
   data() {
     return {
+      loading: true,
       zhiyes: []
     };
   },
   created() {
-    zhiyeService.index().then(res => {
-      this.zhiyes = res.rows;
-    });
+    zhiyeService
+      .index()
+      .then(res => {
+        this.zhiyes = res.rows;
+      })
+      .finally(() => (this.loading = false));
   },
   methods: {
     handleLinktoZhiyeItem(zhiye) {

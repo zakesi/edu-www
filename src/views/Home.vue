@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="home-page" v-loading="loading">
     <div class="banner-section">
       <div class="container-1080">
         <el-carousel height="320px">
@@ -33,20 +33,43 @@
         </div>
       </div>
     </div>
+    <div class="stack-section">
+      <div class="container-1080">
+        <div class="section-title">技能测评</div>
+        <div class="section-description">测评每天刷一刷</div>
+        <div class="stack-content">
+          <template v-for="item in stacks">
+            <router-link
+              :key="item.id"
+              class="stack-item"
+              :to="{ name: 'EvaluationItem', params: { id: item.id } }"
+            >
+              <basic-stack :data="item" />
+            </router-link>
+          </template>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import courseService from "@/globals/service/course.js";
+import stackService from "@/globals/service/stack.js";
 import BasicCardCourse from "@/components/BasicCardCourse.vue";
+import BasicCardStack from "@/components/BasicCardStack.vue";
+
 export default {
   name: "Home",
   components: {
-    "basic-course": BasicCardCourse
+    "basic-course": BasicCardCourse,
+    "basic-stack": BasicCardStack
   },
   data() {
     return {
+      loading: true,
       courses: [],
+      stacks: [],
       banners: [
         {
           id: 1,
@@ -70,9 +93,17 @@ export default {
     };
   },
   created() {
-    courseService.recommand().then(res => {
-      this.courses = res.courses;
-    });
+    Promise.all([
+      courseService.recommand(),
+      stackService.recommand({ count: 16 })
+    ])
+      .then(([courseRes, stackRes]) => {
+        this.courses = courseRes.courses;
+        this.stacks = stackRes.stacks;
+      })
+      .finally(() => {
+        this.loading = false;
+      });
   }
 };
 </script>
@@ -116,6 +147,19 @@ export default {
     }
     &:nth-child(n + 5) {
       margin-top: 16px;
+    }
+  }
+}
+.stack-section {
+  .stack-item {
+    display: inline-block;
+    margin-right: 8px;
+    margin-top: 8px;
+    &:nth-child(8n) {
+      margin-right: 0;
+    }
+    &:nth-child(-n + 8) {
+      margin-top: 8px;
     }
   }
 }

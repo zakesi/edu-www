@@ -17,5 +17,6 @@ export default {
   zhiyeRecommand: `${PREFIX_API}/zhiye/www-recommand`,
   zhiyeItem: id => `${PREFIX_API}/zhiye/${id}`,
   stack: `${PREFIX_API}/stack`,
+  stackRecommand: `${PREFIX_API}/stack/www-recommand`,
   stackRandom: id => `${PREFIX_API}/stack/${id}/random`
 };

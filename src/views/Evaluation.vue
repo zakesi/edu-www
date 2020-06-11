@@ -2,20 +2,16 @@
   <div class="page-content">
     <div class="container-1080">
       <div class="stack-section">
-        <div class="stack-list">
-          <div
-            class="stack-item"
-            v-for="item in stacks"
-            :key="item.id"
-            @click="handleLink(item.id)"
-          >
-            <span class="stack-item-name">{{ item.name }}</span>
-            <img
-              class="stack-item-img"
-              v-if="item.image_url"
-              :src="item.image_url"
-            />
-          </div>
+        <div class="stack-content">
+          <template v-for="item in stacks">
+            <router-link
+              :key="item.id"
+              class="stack-item"
+              :to="{ name: 'EvaluationItem', params: { id: item.id } }"
+            >
+              <basic-stack :data="item" />
+            </router-link>
+          </template>
         </div>
       </div>
     </div>
@@ -24,8 +20,12 @@
 
 <script type="text/javascript">
 import stackService from "@/globals/service/stack.js";
+import BasicCardStack from "@/components/BasicCardStack.vue";
 
 export default {
+  components: {
+    "basic-stack": BasicCardStack
+  },
   data() {
     return {
       stacks: []
@@ -53,37 +53,17 @@ export default {
 </script>
 
 <style type="text/css" scoped lang="less">
-.stack-list {
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
+.stack-section {
+  padding: 60px 0 80px;
   .stack-item {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 1px solid #e4e4e4;
+    display: inline-block;
     margin-right: 8px;
-    margin-bottom: 8px;
-    color: #333;
-    cursor: pointer;
-
-    .stack-item-name {
-      vertical-align: middle;
-      margin-right: 8px;
-      font-size: 14px;
+    margin-top: 8px;
+    &:nth-child(8n) {
+      margin-right: 0;
     }
-
-    .stack-item-img {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      vertical-align: middle;
-    }
-
-    &:hover {
-      background-color: #333;
-      border: 1px solid #333;
-      color: #fff;
+    &:nth-child(-n + 8) {
+      margin-top: 8px;
     }
   }
 }
