@@ -11,8 +11,8 @@ const userService = {
   updateResume: function(params) {
     return request.put(API.userResume, params);
   },
-  showResume: function() {
-    return request.get(API.userResume);
+  showResume: function(id) {
+    return request.get(API.userResumeInfo(id));
   }
 };
 

@@ -11,6 +11,7 @@ export default {
   userWechatBind: `${PREFIX_API}/user/wechat-bind`,
   userPhoneBind: `${PREFIX_API}/user/phone-bind`,
   userResume: `${PREFIX_API}/user/resume`,
+  userResumeInfo: id => `${PREFIX_API}/user/resume/${id}`,
   courseRecommand: `${PREFIX_API}/course/www-recommand`,
   courseItem: id => `${PREFIX_API}/course/${id}`,
   sectionItem: id => `${PREFIX_API}/section/${id}`,

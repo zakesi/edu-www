@@ -3,7 +3,7 @@
     <div class="container-1080">
       <div class="page-mainer">
         <div class="page-mainer-sider">
-          <SettingSiderMenu default-active="/resume" />
+          <SettingSiderMenu default-active="/resume/setting" />
         </div>
         <div class="page-mainer-content">
           <div class="card-box">
@@ -26,6 +26,7 @@
                 </el-form-item>
                 <el-form-item label="意向城市">
                   <el-select
+                    style="width: 430px"
                     :size="inputSize"
                     v-model="form.city"
                     multiple
@@ -328,12 +329,15 @@
 <script type="text/javascript">
 import SettingSiderMenu from "@/components/SettingSiderMenu.vue";
 import userService from "@/globals/service/user.js";
+import { mapState } from "vuex";
 
 export default {
   components: {
     SettingSiderMenu
   },
-  computed: {},
+  computed: {
+    ...mapState(["userInfo"])
+  },
   data() {
     return {
       loading: false,
@@ -370,17 +374,42 @@ export default {
         ]
       },
       skillList: "",
-      cityOption: [{ name: "北京" }, { name: "上海" }]
+      cityOption: [
+        { name: "北京" },
+        { name: "天津" },
+        { name: "沈阳" },
+        { name: "大连" },
+        { name: "哈尔滨" },
+        { name: "济南" },
+        { name: "青岛" },
+        { name: "南京" },
+        { name: "上海" },
+        { name: "杭州" },
+        { name: "武汉" },
+        { name: "广州" },
+        { name: "深圳" },
+        { name: "香港" },
+        { name: "澳门" },
+        { name: "重庆" },
+        { name: "成都" },
+        { name: "西安" },
+        { name: "其他" }
+      ]
     };
   },
-  created() {
+  mounted() {
     this.getData();
   },
   methods: {
     getData() {
+      let id = this.userInfo.id;
+      if (!id) {
+        this.$message.error("未登录！，请刷新页面");
+        return;
+      }
       this.loading = true;
       userService
-        .showResume()
+        .showResume(id)
         .then(res => {
           if (res.resume) {
             for (let key in res.resume) {
@@ -508,7 +537,9 @@ export default {
           this.loading = false;
         });
     },
-    goResume() {}
+    goResume() {
+      this.$router.push({ name: "Resume", params: { id: this.userInfo.id } });
+    }
   }
 };
 </script>

@@ -8,6 +8,7 @@ import Evaluation from "../views/Evaluation.vue";
 import My from "../views/My.vue";
 import Setting from "../views/Setting.vue";
 import ResumeSetting from "../views/ResumeSetting.vue";
+import Resume from "../views/Resume.vue";
 import AuthPhoneLogin from "../views/AuthPhoneLogin.vue";
 import AuthSocialWechat from "../views/AuthSocialWechat.vue";
 import AuthSocialWechatBind from "../views/AuthSocialWechatBind.vue";
@@ -86,6 +87,11 @@ const routes = [
     path: "/social/wechat-bind",
     name: "AuthSocialWechatBind",
     component: AuthSocialWechatBind
+  },
+  {
+    path: "/resume/:id",
+    name: "Resume",
+    component: Resume
   }
 ];
 
