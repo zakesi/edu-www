@@ -7,7 +7,11 @@ import "element-ui/lib/theme-chalk/index.css";
 import "@/styles/reset.less";
 import "@/styles/common.less";
 import "@/utils/reset.js";
+import VueAwesomeSwiper from "vue-awesome-swiper";
+import "swiper/css/swiper.css";
+
 Vue.use(ElementUI);
+Vue.use(VueAwesomeSwiper);
 Vue.config.productionTip = false;
 new Vue({
   router,
