@@ -404,7 +404,7 @@ export default {
     getData() {
       let id = this.userInfo.id;
       if (!id) {
-        this.$message.error("未登录！，请刷新页面");
+        this.$message.error("未登录！，请先登录");
         return;
       }
       this.loading = true;

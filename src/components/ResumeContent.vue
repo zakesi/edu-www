@@ -6,8 +6,12 @@
           <div class="grid-content">
             <h3 class="sub-title">能力简介</h3>
             <ul class="user-power">
-              <li class="capability" v-for="(item, index) in capability" :key="index">
-                <p>{{ index+1 }}、</p>
+              <li
+                class="capability"
+                v-for="(item, index) in capability"
+                :key="index"
+              >
+                <p>{{ index + 1 }}、</p>
                 <p>{{ item.content }}</p>
               </li>
             </ul>
@@ -18,8 +22,13 @@
             <h3 class="sub-title">技能清单</h3>
             <ul class="user-power">
               <li class="skill" v-for="(item, index) in skills" :key="index">
-                {{item.title + "："}}
-                <el-tag size="small" v-for="(tag, tagIndex) in item.content" :key="tagIndex">{{tag}}</el-tag>
+                {{ item.title + "：" }}
+                <el-tag
+                  size="small"
+                  v-for="(tag, tagIndex) in item.content"
+                  :key="tagIndex"
+                  >{{ tag }}</el-tag
+                >
               </li>
             </ul>
           </div>
@@ -38,7 +47,7 @@
                 </h4>
                 <p class="card-text">
                   <span>工作期间：</span>
-                  {{ (item || {}).date | joinArray}}
+                  {{ (item || {}).date | joinArray }}
                 </p>
                 <p class="card-text">
                   <span>项目地址：</span>
@@ -50,12 +59,22 @@
                 </p>
                 <p class="card-text">
                   <span>我的职能：</span>
-                  <span class="function" v-for="(func, funcIndex) in (item || {}).function" :key="funcIndex">- {{ func }}</span>
+                  <span
+                    class="function"
+                    v-for="(func, funcIndex) in (item || {}).function"
+                    :key="funcIndex"
+                    >- {{ func }}</span
+                  >
                 </p>
                 <div class="card-text">
                   <span>相关技术：</span>
                   <div>
-                    <el-tag size="small" v-for="(tag, tagIndex) in (item || {}).tech" :key="tagIndex">{{tag}}</el-tag>
+                    <el-tag
+                      size="small"
+                      v-for="(tag, tagIndex) in (item || {}).tech"
+                      :key="tagIndex"
+                      >{{ tag }}</el-tag
+                    >
                   </div>
                 </div>
               </el-card>
@@ -63,7 +82,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="row-item" v-for="(item, index) in rightItems" :key="index">
+          <div
+            class="row-item"
+            v-for="(item, index) in rightItems"
+            :key="index"
+          >
             <div class="grid-content">
               <el-card>
                 <h4 class="card-title">
@@ -71,7 +94,7 @@
                 </h4>
                 <p class="card-text">
                   <span>工作期间：</span>
-                  {{ (item || {}).date | joinArray}}
+                  {{ (item || {}).date | joinArray }}
                 </p>
                 <p class="card-text">
                   <span>项目地址：</span>
@@ -83,12 +106,22 @@
                 </p>
                 <p class="card-text">
                   <span>我的职能：</span>
-                  <span class="function" v-for="(func, funcIndex) in (item || {}).function" :key="funcIndex">- {{ func }}</span>
+                  <span
+                    class="function"
+                    v-for="(func, funcIndex) in (item || {}).function"
+                    :key="funcIndex"
+                    >- {{ func }}</span
+                  >
                 </p>
                 <div class="card-text">
                   <span>相关技术：</span>
                   <div>
-                    <el-tag size="small" v-for="(tag, tagIndex) in (item || {}).tech" :key="tagIndex">{{tag}}</el-tag>
+                    <el-tag
+                      size="small"
+                      v-for="(tag, tagIndex) in (item || {}).tech"
+                      :key="tagIndex"
+                      >{{ tag }}</el-tag
+                    >
                   </div>
                 </div>
               </el-card>
@@ -102,49 +135,49 @@
 
 <script>
 export default {
-  props:{
-    capability:{
+  props: {
+    capability: {
       type: Array,
       default: function() {
         return [];
       }
     },
-    items:{
+    items: {
       type: Array,
       default: function() {
         return [];
       }
     },
-    skills:{
+    skills: {
       type: Array,
       default: function() {
         return [];
       }
     }
   },
-  computed:{
-    leftItems(){
-      return this.items.filter((data,index) => { 
-        if(index%2 === 0){
-          return data
+  computed: {
+    leftItems() {
+      return this.items.filter((data, index) => {
+        if (index % 2 === 0) {
+          return data;
         }
-      })
+      });
     },
-    rightItems(){
-      return this.items.filter((data,index) => {
-        if(index%2 !== 0){
-          return data
+    rightItems() {
+      return this.items.filter((data, index) => {
+        if (index % 2 !== 0) {
+          return data;
         }
-      })
+      });
     }
   },
   filters: {
-    joinArray(val){
+    joinArray(val) {
       let data = val || [];
-      if(data[0] === data[1]){
-        return data[0]
-      }else {
-        return data.join(" ~ ")
+      if (data[0] === data[1]) {
+        return data[0];
+      } else {
+        return data.join(" ~ ");
       }
     }
   }
@@ -184,7 +217,7 @@ export default {
     }
     a {
       font-size: 14px;
-      color: #409EFF;
+      color: #409eff;
       font-weight: bold;
     }
     .function {
@@ -201,7 +234,7 @@ export default {
       padding: 0 10px;
       line-height: 30px;
       font-size: 12px;
-      color: #409EFF;
+      color: #409eff;
     }
   }
   .user-power {

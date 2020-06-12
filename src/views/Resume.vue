@@ -4,15 +4,57 @@
       <el-container class="sider-pc">
         <Sider
           :job="resumeInfo.job"
-          :city="resumeInfo.city" 
-          :experience="resumeInfo.experience" />
+          :city="resumeInfo.city"
+          :experience="resumeInfo.experience"
+          :userInfo="userInfo"
+        />
       </el-container>
       <el-container class="content-pc">
         <el-header class="page-header" height="64px">
-          <Header></Header>
+          <Header>
+            <template #header-ft>
+              <el-dropdown :hide-on-click="false" :hide-timeout="300">
+                <img
+                  class="pdf-download"
+                  src="@/assets/images/pdf.png"
+                  alt="pdf"
+                />
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>
+                    <div class="pdf-dropdown-item">
+                      <p>选择主题</p>
+                      <el-color-picker
+                        v-model="theme"
+                        size="mini"
+                      ></el-color-picker>
+                    </div>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <div class="pdf-dropdown-item">
+                      <p>是否分页</p>
+                      <el-checkbox v-model="paging" size="mini"
+                        >分页</el-checkbox
+                      >
+                    </div>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <div class="pdf-dropdown-item">
+                      <el-button
+                        class="pdf-download-btn"
+                        size="mini"
+                        type="primary"
+                        @click="handleDownloadPdf"
+                        >下载</el-button
+                      >
+                    </div>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </template>
+          </Header>
         </el-header>
         <el-main class="page-mainer">
-          <Content 
+          <Content
             :capability="resumeInfo.capability"
             :items="resumeInfo.items"
             :skills="resumeInfo.skills"
@@ -24,7 +66,12 @@
     <swiper class="mobile h100" v-else :options="swiperOption" ref="mySwiper">
       <swiper-slide class="mobile-item slide">
         <div class="slide-container">
-          <Sider :job="resumeInfo.job" :city="resumeInfo.city" :experience="resumeInfo.experience" />
+          <Sider
+            :job="resumeInfo.job"
+            :city="resumeInfo.city"
+            :experience="resumeInfo.experience"
+            :userInfo="userInfo"
+          />
           <div class="swiper-tips">
             <div class="tips-cn">左右滑动</div>
             <div class="more">
@@ -38,7 +85,7 @@
           <Header></Header>
         </el-header>
         <el-main class="page-mainer">
-          <Content 
+          <Content
             :capability="resumeInfo.capability"
             :items="resumeInfo.items"
             :skills="resumeInfo.skills"
@@ -47,6 +94,17 @@
         <Footer />
       </swiper-slide>
     </swiper>
+    <pdf
+      v-if="downloadPdf"
+      :resumeInfo="resumeInfo"
+      :userInfo="userInfo"
+      :theme="theme"
+      :paging="paging"
+      @handleDownloadDone="
+        downloadPdf = false;
+        loading = false;
+      "
+    />
   </div>
 </template>
 
@@ -55,6 +113,7 @@ import Header from "@/components/ResumeHeader.vue";
 import Footer from "@/components/ResumeFooter.vue";
 import Sider from "@/components/ResumeSider.vue";
 import Content from "@/components/ResumeContent.vue";
+import Pdf from "@/components/ResumePdf.vue";
 import userService from "@/globals/service/user.js";
 
 export default {
@@ -65,7 +124,11 @@ export default {
       swiperOption: {
         loop: true
       },
-      resumeInfo: {}
+      theme: "#6186ff",
+      paging: false,
+      downloadPdf: false,
+      resumeInfo: {},
+      userInfo: {}
     };
   },
   created() {
@@ -86,6 +149,7 @@ export default {
             }
             this.resumeInfo = res.resume;
           }
+          this.userInfo = res.userInfo;
         })
         .finally(() => {
           this.loading = false;
@@ -98,13 +162,18 @@ export default {
       } else if (width >= 720) {
         this.pc = true;
       }
+    },
+    handleDownloadPdf() {
+      this.downloadPdf = true;
+      this.loading = true;
     }
   },
   components: {
     Header,
     Footer,
     Sider,
-    Content
+    Content,
+    Pdf
   }
 };
 </script>
@@ -182,6 +251,24 @@ export default {
 .content-pc {
   width: 75%;
 }
+.pdf-download {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.pdf-dropdown-item {
+  display: flex;
+  align-items: center;
+  p {
+    font-size: 13px;
+    margin-right: 10px;
+  }
+  .pdf-download-btn {
+    margin: 4px auto;
+    width: 100%;
+  }
+}
 .page-header {
   box-shadow: 6px 2px 8px #eae5c9;
   position: relative;
@@ -201,5 +288,14 @@ export default {
 }
 .page-mainer {
   padding: 0 !important;
+}
+</style>
+
+<style lang="less">
+.pdf-dropdown-item {
+  .el-checkbox__label {
+    padding-left: 5px;
+    font-size: 13px;
+  }
 }
 </style>

@@ -11,7 +11,7 @@
       <div class="user-info-title">个人信息</div>
       <div class="user-info-text" v-if="job">
         <i class="el-icon-wind-power"></i>
-        <span>应聘职位：{{job}}</span>
+        <span>应聘职位：{{ job }}</span>
       </div>
       <div class="user-info-text" v-if="userInfo.birthday">
         <i class="el-icon-present"></i>
@@ -19,7 +19,7 @@
       </div>
       <div class="user-info-text" v-if="city.length">
         <i class="el-icon-position"></i>
-        <span>意向城市：{{city | joinArray}}</span>
+        <span>意向城市：{{ city | joinArray }}</span>
       </div>
       <div class="user-info-text" v-if="userInfo.phone">
         <i class="el-icon-mobile-phone"></i>
@@ -28,16 +28,14 @@
     </div>
     <div class="user-info" v-if="experience.length">
       <div class="user-info-title">实习经历</div>
-      <div
-        v-for="(item, index) in experience" 
-        :key="index">
+      <div v-for="(item, index) in experience" :key="index">
         <div class="user-info-text">
           <i class="el-icon-office-building"></i>
           <span>{{ item.company }}</span>
         </div>
         <div class="user-info-text">
           <i class="el-icon-time"></i>
-          <span>{{(item.date || []).join("-")}}</span>
+          <span>{{ (item.date || []).join("-") }}</span>
         </div>
         <div class="user-info-text content">
           <i class="el-icon-suitcase"></i>
@@ -49,7 +47,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import moment from "@/utils/moment.js";
 
 export default {
@@ -70,14 +67,17 @@ export default {
       default: function() {
         return [];
       }
+    },
+    userInfo: {
+      type: Object,
+      default: function() {
+        return {};
+      }
     }
   },
-  computed: {
-    ...mapState(["userInfo"])
-  },
   filters: {
-    joinArray(val){
-      return val.join("、")
+    joinArray(val) {
+      return val.join("、");
     }
   }
 };
@@ -149,7 +149,6 @@ export default {
       margin: 0 auto 20px;
       box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
       border-radius: 50%;
-      background-color: #000;
       object-fit: contain;
     }
   }
