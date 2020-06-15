@@ -61,17 +61,15 @@
       <div class="title" :style="{ color: theme }">experience</div>
       <div class="items-container">
         <el-steps direction="vertical" :style="{ color: theme }">
-          <el-step
-            v-for="(item, index) in resumeInfo.items || []"
-            :key="index"
-            :title="item.name"
-            icon="el-icon-star-off"
-          >
+          <el-step v-for="(item, index) in resumeInfo.items || []" :key="index">
+            <template #title>
+              <p class="step-title">{{ item.name }}</p>
+              <span class="step-date">{{ item.date | joinTime }}</span>
+            </template>
+            <template #icon>
+              <div class="dot" :style="{ background: theme }"></div>
+            </template>
             <template #description>
-              <div class="items">
-                <p class="items-title">项目时间：</p>
-                <span class="item-text">{{ item.date | joinTime }}</span>
-              </div>
               <div class="items">
                 <p class="items-title">项目地址：</p>
                 <span class="item-text">{{ item.address }}</span>
@@ -151,7 +149,7 @@ export default {
         allowTaint: true,
         useCORS: true,
         scale: 2,
-        dpi: "192"
+        dpi: "300"
       }).then(canvas => {
         // 分页
         if (this.paging) {
@@ -264,7 +262,7 @@ export default {
         margin-bottom: 10px;
       }
       .user-status {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 500;
         text-align: center;
       }
@@ -286,28 +284,46 @@ export default {
     padding: 30px;
     .title {
       text-transform: uppercase;
-      font-size: 16px;
-      font-weight: 400;
+      font-size: 15px;
+      font-weight: bold;
       color: #6186ff;
       margin-top: 20px;
     }
     .user-power {
       padding-left: 10px;
-      font-size: 13px;
+      font-size: 12px;
       list-style-type: none;
       .capability {
         p {
           font-size: 12px;
           margin: 8px 0;
-          color: #666;
+          color: #999;
         }
       }
     }
     .items-container {
-      padding: 10px 0;
-      color: #555;
+      padding: 20px 0 10px 80px;
+      color: #777;
       p {
         margin: 0;
+      }
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+      }
+      .step-title {
+        font-size: 12px;
+        font-weight: normal;
+        color: inherit;
+      }
+      .step-date {
+        position: absolute;
+        left: -90px;
+        top: 0px;
+        font-size: 12px;
+        font-weight: normal;
+        color: inherit;
       }
       .items {
         display: flex;
@@ -316,18 +332,19 @@ export default {
         .items-title {
           width: 60px;
           flex: none;
-          color: #555;
+          color: #777;
         }
         .item-text {
           word-break: break-word;
-          color: #666;
+          color: #999;
         }
         ol {
-          padding-left: 13px;
+          padding-left: 12px;
           margin: 0;
-          color: #666;
+          color: #999;
         }
         .el-tag {
+          font-size: 12px;
           color: #fff;
           margin: 0 5px 5px 0;
           opacity: 0.9;
@@ -346,14 +363,25 @@ export default {
   }
   .el-step__title.is-wait {
     color: inherit;
-    font-size: 13px;
-    font-weight: normal;
-    line-height: 28px !important;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 24px !important;
     padding-bottom: 4px !important;
+    position: relative;
   }
   .el-step__description.is-wait {
     color: #555;
     padding: 0 !important;
+  }
+  .el-step__icon.is-text {
+    border: none;
+  }
+  .el-step__icon {
+    font-size: 0;
+  }
+  .el-step__line {
+    width: 1px !important;
+    left: 12px !important;
   }
 }
 </style>

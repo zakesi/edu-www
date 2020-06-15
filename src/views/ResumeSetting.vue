@@ -95,7 +95,7 @@
                       :size="inputSize"
                       class="item"
                       v-model="item.content"
-                      placeholder="请输入能力简介"
+                      placeholder="请输入能力简介；例：精通 HTML、CSS、JavaScript 基础..."
                     />
                     <div
                       v-show="index === form.capability.length - 1"
@@ -663,7 +663,7 @@ export default {
       }
       .items-list {
         width: 500px;
-        background: #f7f7f7;
+        border: 1px solid #dcdcdc;
         padding: 10px;
         margin: 10px 0;
         border-radius: 4px;
